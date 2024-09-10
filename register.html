@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <!-- Carica Firebase dal CDN -->
+    <script src="https://www.gstatic.com/firebasejs/9.16.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.16.0/firebase-auth-compat.js"></script>
+</head>
+<body>
+    <div>
+        <h2>Register</h2>
+        <input type="email" id="email" placeholder="Email">
+        <input type="password" id="password" placeholder="Password">
+        <button id="registerButton">Register</button>
+        <p id="message"></p>
+    </div>
+
+    <script>
+        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+        const firebaseConfig = {
+            apiKey: "AIzaSyCB1PguT3HrZWuHjmyWrVHUDs16B6QUJFg",
+            authDomain: "test-bd-98d86.firebaseapp.com",
+            databaseURL: "https://test-bd-98d86-default-rtdb.europe-west1.firebasedatabase.app",
+            projectId: "test-bd-98d86",
+            storageBucket: "test-bd-98d86.appspot.com",
+            messagingSenderId: "58269920049",
+            appId: "1:58269920049:web:06e5949053dcf70e6f9e10",
+            measurementId: "G-EEX9KP5WXK"
+            };
+
+        // Inizializza Firebase
+        firebase.initializeApp(firebaseConfig);
+
+        // Inizializza Firebase Authentication
+        const auth = firebase.auth();
+
+        document.getElementById('registerButton').addEventListener('click', () => {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            firebase.auth().createUserWithEmailAndPassword(email, password)
+                .then((userCredential) => {
+                    document.getElementById('message').textContent = 'Registrazione effettuata con successo!';
+                })
+                .catch((error) => {
+                    document.getElementById('message').textContent = 'Errore: ' + error.message;
+                });
+        });
+    </script>
+</body>
+</html>

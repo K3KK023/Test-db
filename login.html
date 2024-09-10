@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <!-- Carica Firebase dal CDN -->
+    <script src="https://www.gstatic.com/firebasejs/9.16.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.16.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.16.0/firebase-firestore-compat.js"></script>
+</head>
+<body>
+    <div>
+        <h2>Login</h2>
+        <input type="email" id="email" placeholder="Email">
+        <input type="password" id="password" placeholder="Password">
+        <br><br>
+        <button id="loginButton">Login</button>
+        <br><br>
+        <!-- Aggiungi un pulsante per l'accesso tramite Google -->
+        <button id="googleLoginButton">Login con Google</button>
+        <p id="message"></p>
+    </div>
+
+    <script>
+        // Configurazione Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyCB1PguT3HrZWuHjmyWrVHUDs16B6QUJFg",
+            authDomain: "test-bd-98d86.firebaseapp.com",
+            databaseURL: "https://test-bd-98d86-default-rtdb.europe-west1.firebasedatabase.app",
+            projectId: "test-bd-98d86",
+            storageBucket: "test-bd-98d86.appspot.com",
+            messagingSenderId: "58269920049",
+            appId: "1:58269920049:web:06e5949053dcf70e6f9e10",
+            measurementId: "G-EEX9KP5WXK"
+        };
+
+        // Inizializza Firebase
+        firebase.initializeApp(firebaseConfig);
+
+        // Inizializza Firebase Authentication
+        const auth = firebase.auth();
+
+        // Inizializza Firestore
+        const db = firebase.firestore();
+
+        // Funzione per registrare i log di accesso nella raccolta "Auth_Logs/{UID}"
+        function registraLogin(uid, email, metodo, ruolo) {
+            db.collection('Auth_Logs').doc(uid).set({
+                email: email,
+                metodo: metodo, // Metodo di login (es: 'email/password', 'google')
+                ruolo: ruolo,   // Ruolo dell'utente (User, Manager, Admin)
+                timestamp: firebase.firestore.FieldValue.serverTimestamp()
+            })
+            .then(() => {
+                console.log('Log di accesso salvato con successo');
+            })
+            .catch((error) => {
+                console.error('Errore nel salvare il log di accesso: ', error);
+            });
+        }
+
+// Funzione per ottenere il ruolo dell'utente dal database, senza creare una nuova raccolta
+function ottieniRuolo(uid, email, metodo) {
+    return db.collection('users').doc(uid).get().then((doc) => {
+        if (doc.exists) {
+            // Se l'utente esiste, restituisci il ruolo dal database
+            return doc.data().ruolo;
+        } else {
+            // Se l'utente non esiste, restituisci solo il ruolo "User" senza creare un nuovo documento
+            return "User";
+        }
+    }).catch((error) => {
+        console.error("Errore durante il recupero del ruolo: ", error);
+        return "User"; // Se c'è un errore, restituisci comunque il ruolo "User"
+    });
+}
+        // Login con email e password
+        document.getElementById('loginButton').addEventListener('click', () => {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            auth.signInWithEmailAndPassword(email, password)
+                .then((userCredential) => {
+                    const user = userCredential.user;
+                    document.getElementById('message').textContent = 'Login effettuato con successo';
+
+                    // Ottieni il ruolo dell'utente e poi registra il login
+                    ottieniRuolo(user.uid, email, 'email/password').then((ruolo) => {
+                        registraLogin(user.uid, email, 'email/password', ruolo);
+                    });
+                })
+                .catch((error) => {
+                    document.getElementById('message').textContent = 'Errore: ' + error.message;
+                });
+        });
+
+        // Login tramite Google
+        document.getElementById('googleLoginButton').addEventListener('click', () => {
+            const provider = new firebase.auth.GoogleAuthProvider();
+
+            auth.signInWithPopup(provider)
+                .then((result) => {
+                    const user = result.user;
+                    document.getElementById('message').textContent = 'Login con Google effettuato con successo';
+
+                    // Ottieni il ruolo dell'utente e poi registra il login
+                    ottieniRuolo(user.uid, user.email, 'google').then((ruolo) => {
+                        registraLogin(user.uid, user.email, 'google', ruolo);
+                    });
+                })
+                .catch((error) => {
+                    document.getElementById('message').textContent = 'Errore: ' + error.message;
+                });
+        });
+    </script>
+</body>
+</html>
