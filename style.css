@@ -180,3 +180,24 @@ td.status-high {
 .file-upload:hover {
     border-color: #278b42;
 }
+
+/* Stile per il link di registrazione */
+.register-link {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.register-link a.btn {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 10px 20px;
+    background-color: #31aa52; /* Colore verde per il pulsante "Registrati" */
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-size: 16px;
+}
+
+.register-link a.btn:hover {
+    background-color: #278b42;
+}
