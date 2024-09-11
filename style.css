@@ -1,0 +1,182 @@
+/* Stile generico per il body */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #d9dee2; /* Grigio chiaro per lo sfondo */
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* Layout principale */
+.container {
+    display: flex;
+    width: 90%;
+    max-width: 1200px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Barra laterale */
+.sidebar {
+    background-color: #e6e8eb;
+    width: 250px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+}
+
+.sidebar a {
+    text-decoration: none;
+    color: #333;
+    padding: 10px 15px;
+    margin: 10px 0;
+    display: block;
+    background-color: #fff;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.sidebar a:hover {
+    background-color: #d0d4d9;
+}
+
+.sidebar a.active {
+    background-color: #31aa52; /* Verde per elemento attivo */
+    color: white;
+}
+
+/* Area contenuti principali */
+.content {
+    flex-grow: 1;
+    padding: 20px;
+}
+
+/* Titoli e testo */
+h1, h2 {
+    color: #333;
+}
+
+p {
+    color: #666;
+}
+
+/* Pulsanti */
+button {
+    background-color: #31aa52; /* Verde principale */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 10px;
+}
+
+button:hover {
+    background-color: #278b42;
+}
+
+button.cancel {
+    background-color: #d9534f; /* Rosso per il logout */
+}
+
+button.cancel:hover {
+    background-color: #c12e2a;
+}
+
+button.yellow {
+    background-color: #f0ad4e; /* Giallo per avviso */
+    color: white;
+}
+
+button.yellow:hover {
+    background-color: #ec971f;
+}
+
+/* Tabella */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background-color: #fff;
+}
+
+table, th, td {
+    border: 1px solid #dee2e6;
+}
+
+th, td {
+    padding: 12px;
+    text-align: left;
+}
+
+th {
+    background-color: #f9fafb;
+    font-weight: bold;
+}
+
+td.status-low {
+    color: #5cb85c; /* Verde per priorità bassa */
+}
+
+td.status-medium {
+    color: #f0ad4e; /* Giallo per priorità media */
+}
+
+td.status-high {
+    color: #d9534f; /* Rosso per priorità alta */
+}
+
+/* Finestra modale per aggiungere report */
+.modal {
+    background-color: rgba(0, 0, 0, 0.4);
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    max-width: 500px;
+    width: 100%;
+}
+
+.modal-header {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.modal-body {
+    margin-bottom: 20px;
+}
+
+/* Stile per i file upload */
+.file-upload {
+    border: 2px dashed #31aa52;
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+    color: #999;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.file-upload:hover {
+    border-color: #278b42;
+}
