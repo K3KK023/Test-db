@@ -64,21 +64,22 @@
             });
         }
 
-// Funzione per ottenere il ruolo dell'utente dal database, senza creare una nuova raccolta
-function ottieniRuolo(uid, email, metodo) {
-    return db.collection('users').doc(uid).get().then((doc) => {
-        if (doc.exists) {
-            // Se l'utente esiste, restituisci il ruolo dal database
-            return doc.data().ruolo;
-        } else {
-            // Se l'utente non esiste, restituisci solo il ruolo "User" senza creare un nuovo documento
-            return "User";
+        // Funzione per ottenere il ruolo dell'utente dal database, senza creare una nuova raccolta
+        function ottieniRuolo(uid) {
+            return db.collection('users').doc(uid).get().then((doc) => {
+                if (doc.exists) {
+                    // Se l'utente esiste, restituisci il ruolo dal database
+                    return doc.data().ruolo;
+                } else {
+                    // Se l'utente non esiste, restituisci "User"
+                    return "User";
+                }
+            }).catch((error) => {
+                console.error("Errore durante il recupero del ruolo: ", error);
+                return "User"; // Se c'è un errore, restituisci comunque il ruolo "User"
+            });
         }
-    }).catch((error) => {
-        console.error("Errore durante il recupero del ruolo: ", error);
-        return "User"; // Se c'è un errore, restituisci comunque il ruolo "User"
-    });
-}
+
         // Login con email e password
         document.getElementById('loginButton').addEventListener('click', () => {
             const email = document.getElementById('email').value;
@@ -90,7 +91,7 @@ function ottieniRuolo(uid, email, metodo) {
                     document.getElementById('message').textContent = 'Login effettuato con successo';
 
                     // Ottieni il ruolo dell'utente e poi registra il login
-                    ottieniRuolo(user.uid, email, 'email/password').then((ruolo) => {
+                    ottieniRuolo(user.uid).then((ruolo) => {
                         registraLogin(user.uid, email, 'email/password', ruolo);
                     });
                 })
@@ -109,7 +110,7 @@ function ottieniRuolo(uid, email, metodo) {
                     document.getElementById('message').textContent = 'Login con Google effettuato con successo';
 
                     // Ottieni il ruolo dell'utente e poi registra il login
-                    ottieniRuolo(user.uid, user.email, 'google').then((ruolo) => {
+                    ottieniRuolo(user.uid).then((ruolo) => {
                         registraLogin(user.uid, user.email, 'google', ruolo);
                     });
                 })
