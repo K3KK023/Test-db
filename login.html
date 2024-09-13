@@ -66,7 +66,7 @@
 
         // Funzione per ottenere il ruolo dell'utente dal database
         function ottieniRuolo(uid) {
-            return db.collection('users').doc(uid).get().then((doc) => {
+            return db.collection('Auth_Logs').doc(uid).get().then((doc) => {
                 if (doc.exists) {
                     // Se l'utente esiste, restituisci il ruolo dal database
                     return doc.data().ruolo;
